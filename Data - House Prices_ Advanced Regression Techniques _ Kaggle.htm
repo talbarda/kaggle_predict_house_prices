@@ -1,0 +1,672 @@
+
+
+
+<!DOCTYPE html>
+
+<!--[if lt IE 7 ]><html class="ie ie6 lte7 lte8 lte9"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7 lte7 lte8 lte9"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8 lte8 lte9"><![endif]-->
+<!--[if IE 9 ]><html class="ie ie9 lte9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html ><!--<![endif]-->
+
+<head>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:300,400italic,700italic,400,700' rel='stylesheet' type='text/css'> 
+
+    
+    <link rel="stylesheet" href="/content/v/1fb55cec3f8f/shared/css/font-awesome.min.css">
+
+    
+    
+    <title>Data - House Prices: Advanced Regression Techniques | Kaggle</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index, follow" />
+    <link href="/content/v/4e3f994e938b/kaggle/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    
+        <meta name="keywords" content="Kaggle, data science, datasets, public data, crowdsourced analytics, competitions, tutorials, scripts, Python, R, InClass, jobs board" />
+            <meta name="description" content="Kaggle is your home for data science. Learn new skills, build your career, collaborate with other data scientists, and compete in world-class machine learning challenges." />
+
+            <link rel="stylesheet" href="/content/v/397d8f5c14ef/shared/css/base.less" type="text/css" />
+        <link rel="stylesheet" href="/content/v/e1cd6968c0d2/kaggle/css/kaggle-site.less" type="text/css" />
+
+        <script type="text/javascript" src="/content/v/47b68dce8cb6/shared/js/jquery-1.7.2.min.js"></script>
+            <script type="text/javascript" src="/content/v/7846b5904b60/shared/js/jquery-ui-1.9.2.min.js"></script>
+
+    
+        <script type="text/javascript" src="/content/v/a60ecf3c5c7d/shared/js/kaggle.min.js"></script>
+        <script type="text/javascript">
+            
+            Kaggle.Current.siteId = 1;
+                Kaggle.Current.competitionId = 5407;
+                    </script>
+
+    
+    <!--[if (gte IE 6)&(lte IE 8)]>
+        <script type="text/javascript" src="/content/v/f1f17fea7cee/shared/js/ie/selectivizr.min.js"></script>
+    <![endif]-->
+
+    
+                                            <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+                                                                
+                    <link rel="apple-touch-icon" href="/content/v/1e4cdaa83f46/kaggle/img/apple-touch-icon.png" />
+
+
+    
+    <!--[if lt IE 9]>
+        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    
+    
+
+
+
+    <script>
+          window.intercomSettings = {
+            app_id: "koj6gxx6"
+          };
+    </script>
+<script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/koj6gxx6';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
+</head>
+<body class="logged-out    kaggle">
+    <div id="watermark1" class=""></div>
+    <div id="watermark2" class=""></div>
+    
+    <div id="wrap"><!-- needed for sticky footer -->
+
+
+<div id="menu-open-overlay"></div>
+
+<div id="header2" class="">
+    <div id="header2-inside" class=>
+        <a id="logo" href="/"><img alt="Kaggle" height="86" src="/content/v/9da25a3f126b/kaggle/img/site-logo.png" width="240" /></a>
+
+            <ul id="header-ul">
+                <li>
+  <a href="/solutions/competitions">Host</a>
+</li>
+<li>
+  <a href="/competitions">Competitions</a>
+</li>
+<li>
+  <a href="/datasets">Datasets</a>
+</li>
+<li>
+  <a href="/kernels">Kernels</a>
+</li>
+<li>
+  <a href="/jobs">Jobs</a>
+</li>
+<li>
+<a href="">Community &#9662;</a>
+<ul>
+  <li><a href='/users'>User Rankings</a></li>
+  <li><a href='/forums'>Forum</a></li>
+  <li><a href="http://blog.kaggle.com" target="_blank">Blog</a></li>
+  <li><a href='/Wiki'>Wiki</a></li>
+</ul>
+</li><!-- <script>
+  $(function(){
+    if (!$('body.logged-in').length) {
+      $('a.logged-in-only').hide().parent().next().find('a').css('padding-top','10px');
+    }
+  });
+</script> -->
+            </ul>
+
+        <script>
+            jQuery(function () {
+                jQuery('#header-ul li:has(ul) > a').click(function (e) {
+                    e.preventDefault();
+
+                    jQuery('#header-ul li').not(jQuery(this).parent()).find('ul').removeClass('open');
+                    jQuery(this).parent().find('ul').toggleClass('open');
+                    jQuery('#menu-open-overlay').show();
+                });
+
+                jQuery('#menu-open-overlay').click(function () {
+                    jQuery('#header-ul ul').removeClass('open');
+                    jQuery('#top-bar-signin').hide();
+                    jQuery(this).hide();
+                });
+
+            });
+        </script>
+
+        <ul id="header-control">
+                <li id="header-signup"><a href="/account/register"><strong><text>Sign up</text></strong></a></li>
+                <li id="header-login">
+                    <a href="/account/login?returnUrl=%2Fc%2Fhouse-prices-advanced-regression-techniques%2Fdata" class="login-link">Login</a>
+                </li>
+        </ul>
+            <div id="top-bar-signin">
+                <div id="social-authentication-top">
+    <div id="social-authentication-top-head">
+        Log in<br/>
+        with &mdash;
+    </div>
+    <div id="social-authentication-top-buttons">
+        <a href="/account/authenticate/facebook" class="socialSignIn facebook" title="Log in with Facebook"><img src="/content/v/368347303d78/shared/img/auth-facebook.png" width="36" height="36" alt="Sign up with Facebook" title="Sign up with Facebook" /></a>
+        <a href="/account/authenticate/google" class="socialSignIn google" title="Log in with Google"><img src="/content/v/ace060e512d3/shared/img/auth-google.png" width="36" height="36" alt="Sign up with Google" title="Sign up with Google" /></a>
+        <a href="/account/authenticate/yahoo" class="socialSignIn yahoo" title="Log in with Yahoo"><img src="/content/v/2ff11e08ba40/shared/img/auth-yahoo.png" width="36" height="36" alt="Sign up with Yahoo" title="Sign up with Yahoo" /></a>
+    </div>
+    
+    <script type="text/javascript">
+        var socialSignInLinks = $('a.socialSignIn');
+        socialSignInLinks.attr("href", function(i,v){
+            return v + '?js=1';
+        });
+        socialSignInLinks.click(function(){
+            _gaq.push(['_trackEvent', 'action', 'login', 'top-bar']);
+            return true;
+        });
+    </script>
+</div>
+    
+
+<form action="/account/login" id="signin" method="post"><input id="returnUrl" name="returnUrl" type="hidden" value="https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data" /><input data-val="true" data-val-length="The field User name must be a string with a minimum length of 2 and a maximum length of 255." data-val-length-max="255" data-val-length-min="2" data-val-required="The User name field is required." id="UserName" name="UserName" placeholder="Email / username" type="text" value="" /><span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true"></span><input data-val="true" data-val-length="The field Password must be a string with a minimum length of 1 and a maximum length of 255." data-val-length-max="255" data-val-length-min="1" data-val-required="The Password field is required." id="Password" name="Password" placeholder="Password" type="password" /><span class="field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true"></span>    <div id="remember-me">
+        <input data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true" /><input name="RememberMe" type="hidden" value="false" />            
+        <label for="RememberMe">Remember me?</label>
+    </div>   
+    <input type="submit" value="Login" />
+<input name="__RequestVerificationToken" type="hidden" value="y1RFcBbKSN6HENEQonEJTFa6-NzXPDxQdSofCqMKMqpPyCygi7fEB3ssWqLu0FRqf4uDrryPtzODCc7Bs8x9qeVvv641" />    <input id="signinjs" type="hidden" name="JavaScriptEnabled" value="false" />    
+</form>
+<script type="text/javascript">
+    $('#signinjs').attr('value', 'true');
+    $('#signin').submit(function () { _gaq.push(['_trackEvent', 'action', 'login', 'top-bar']); });
+</script>
+
+<div id="forgot-links">        
+    Forgot your <a href="/forgot/username">Username</a> 
+    / 
+    <a href="/forgot/password">Password</a>?
+</div>
+
+            </div>
+            <script>
+                jQuery(function () {
+                    jQuery('.login-link').click(function (e) {
+                        e.preventDefault();
+                        jQuery('#top-bar-signin').toggle();
+                        jQuery('#menu-open-overlay').toggle();
+                        if (jQuery('#top-bar-signin').is(":visible")) {
+                            jQuery('#UserName').focus();
+                        }
+                    });
+                });
+            </script>
+    </div>
+</div>
+
+
+
+
+
+
+
+        
+
+        <!-- header-inside and header -->
+            <div id="main">
+                
+
+
+
+
+
+<div id='competition' @Html.Attr('class', 'prospecting', competition.InProspectingPhase).Add(isPreview ? 'preview' : '')>                <header id="comp-header" >
+                    <a href="/c/house-prices-advanced-regression-techniques"><img id="comp-image" src="https://kaggle2.blob.core.windows.net/competitions/kaggle/5407/logos/front_page.png" alt="" /></a>
+                    <div id="comp-header-details">
+                        <h2>
+
+                    Knowledge 
+                        &bull; <a href="/c/house-prices-advanced-regression-techniques/leaderboard">2,568 teams</a>
+                </h2>
+                <h1><a href="/c/house-prices-advanced-regression-techniques">House Prices: Advanced Regression Techniques</a>
+                        </h1>
+
+                        
+
+                            <div id="comp-header-stats" >
+                                    <div id="comp-header-stats-progress-section">
+                                        <div id="comp-header-stats-progress">
+                                            <div id="comp-header-stats-teams" style="width:58%">
+                                            </div>
+                                        </div>
+                                        <div id="comp-progress-start"></div>
+                                        <div id="comp-progress-end" ></div>
+
+
+
+
+
+                                    </div>
+
+                                <div id="comp-header-stats-start">
+                                    Tue 30 Aug 2016
+                                </div>
+                                <div id="comp-header-stats-end">
+                                    Wed 1 Mar 2017
+                                        <span class="to-go-note">
+                                            (2 months to go)
+                                        </span>
+                                </div>
+                            </div>
+                    </div>
+                </header>
+                <script type="text/javascript">
+                    jQuery(function ($) {
+                        $('#comp-header-details h1').textfill({ maxFontPixels: 26, innerTag: 'a' });
+                    });
+                </script>
+            <div class="comp-sidebar">
+                
+
+
+<div class="_panel" id="competition-dashboard">
+    <header>
+        <h1>Dashboard</h1>
+    </header>
+    <ul id="competition-dashboard-dropdown">
+        <li class="cd-home">
+            <a href="/c/house-prices-advanced-regression-techniques">Home</a>
+            <ul>
+                <li class="cd-data"><a href="/c/house-prices-advanced-regression-techniques/data">Data</a></li>
+
+                    <li class="cd-submit submission-link">
+                        <a class="comp-link" href="/c/house-prices-advanced-regression-techniques/submit">Make a submission</a>
+                    </li>
+            </ul>
+        </li>
+
+        <li class="cd-info">
+            <a id="open-info">Information</a>
+            <ul id="pages-flyout">
+                    <li>
+<a href="/c/house-prices-advanced-regression-techniques">Description</a>                    </li>
+                    <li>
+<a href="/c/house-prices-advanced-regression-techniques/details/evaluation">Evaluation</a>                    </li>
+                    <li>
+<a href="/c/house-prices-advanced-regression-techniques/rules">Rules</a>                    </li>
+                    <li>
+<a href="/c/house-prices-advanced-regression-techniques/details/prizes">Prizes</a>                    </li>
+                    <li>
+<a href="/c/house-prices-advanced-regression-techniques/details/timeline">Timeline</a>                    </li>
+
+            </ul>
+        </li>
+
+            <li class="cd-forum"><a href="/c/house-prices-advanced-regression-techniques/forums">Forum</a></li>
+
+            <li class="cd-scripts">
+                <a class="comp-link" href="/c/house-prices-advanced-regression-techniques/kernels">Kernels</a>
+                <ul class="flyout">
+                    <li><a href="/c/house-prices-advanced-regression-techniques/kernels/scripts/new">New Script</a></li>
+                    <li><a href="/c/house-prices-advanced-regression-techniques/kernels/notebooks/new">New Notebook</a></li>
+                </ul>
+            </li>
+
+            <li class="cd-leaderboard">
+                <a href="/c/house-prices-advanced-regression-techniques/leaderboard">Leaderboard</a>
+            </li>
+
+
+
+
+    </ul>
+</div>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".cd-data").addClass("selected");
+        });
+    </script>
+
+                
+                        <div id="partial-mini-leaderboard"></div>
+                        <script type="text/javascript">
+                            jQuery(function ($) {
+                                $("#partial-mini-leaderboard").load("/c/5407/partial/mini-leaderboard");
+                            });
+                        </script>
+                        <div id="partial-mini-scripts"></div>
+                        <script type="text/javascript">
+                            jQuery(function ($) {
+                                $("#partial-mini-scripts").load("/c/5407/kernels/hot/widget");
+                            });
+                        </script>
+
+
+    <div class="widget _panel" id="compside-discussions">
+        <header>
+            <h1><a href="/c/house-prices-advanced-regression-techniques/forums">Forum (96 topics)</a></h1>
+        </header>
+
+        <ul>
+                <li>
+                    <div class="post-title"><a href="/captcalculator/house-prices-advanced-regression-techniques/imputing-missing-data-with-the-mice-package-in-r/comments#150428">Imputing missing data with the mice package in R</a></div>
+                    <div class="post-time">4 hours ago</div>
+                </li>
+                <li>
+                    <div class="post-title"><a href="/humananalog/house-prices-advanced-regression-techniques/xgboost-lasso/comments#150410">XGBoost + Lasso</a></div>
+                    <div class="post-time">7 hours ago</div>
+                </li>
+                <li>
+                    <div class="post-title"><a href="/bisaria/house-prices-advanced-regression-techniques/handling-missing-data/comments#150315">Handling Missing Data</a></div>
+                    <div class="post-time">15 hours ago</div>
+                </li>
+                <li>
+                    <div class="post-title"><a href="/eliotbarr/house-prices-advanced-regression-techniques/stacking-starter/comments#150308">Stacking Starter</a></div>
+                    <div class="post-time">15 hours ago</div>
+                </li>
+                <li>
+                    <div class="post-title"><a href="/ozagordi/house-prices-advanced-regression-techniques/a-clear-example-of-overfitting/comments#150231">A clear example of overfitting</a></div>
+                    <div class="post-time">yesterday</div>
+                </li>
+                <li>
+                    <div class="post-title"><a href="/juliencs/house-prices-advanced-regression-techniques/a-study-on-regression-applied-to-the-ames-dataset/comments#149792">A study on Regression applied to the Ames dataset</a></div>
+                    <div class="post-time">2 days ago</div>
+                </li>
+        </ul>
+
+    </div> 
+                    <div id="partial-stats-ticker"></div>
+                    <script type="text/javascript">
+                        jQuery(function ($) {
+                            $("#partial-stats-ticker").load("/c/5407/partial/stats");
+                        });
+                    </script>
+            </div>
+    <div class="data---house-prices:-advanced-regression-techniques-page comp-content with-sidebar _panel">
+            <header class='data'>
+                <div class="simple-steps">
+                    <a class="info" href="/c/house-prices-advanced-regression-techniques">Competition Details</a>
+                    &raquo;
+                    <a class="data" href="/c/house-prices-advanced-regression-techniques/data">Get the Data</a>
+                        &raquo;
+                        <a class="submit" href="/c/house-prices-advanced-regression-techniques/submit">Make a submission</a>
+                </div>
+                    </header>
+                <div class="comp-content-inside">
+                    <div id="competition-intro">
+
+                    </div>
+
+
+
+
+
+<h3>Data Files</h3>
+
+
+
+    <table id="data-files" class="nicetable full roomy align-top border">   
+        <thead>
+            <tr>
+                <th colspan="2">File Name</th> 
+                <th>Available Formats</th>         
+            </tr> 
+        </thead>
+
+            <tbody  >
+                <tr>
+
+                    <td class="file-name" colspan="2" rowspan="1">data_description</td>
+                    <td>
+<a href="/c/house-prices-advanced-regression-techniques/download/data_description.txt" name="data_description.txt" onclick="window.Intercom(&#39;trackEvent&#39;,&#39;download_compdata&#39;,{&#39;comp_id&#39;: 5407});">.txt (13.06 kb)</a>                    </td>
+                </tr>
+
+            </tbody>
+            <tbody  >
+                <tr>
+
+                    <td class="file-name" colspan="2" rowspan="1">train</td>
+                    <td>
+<a href="/c/house-prices-advanced-regression-techniques/download/train.csv" name="train.csv" onclick="window.Intercom(&#39;trackEvent&#39;,&#39;download_compdata&#39;,{&#39;comp_id&#39;: 5407});">.csv (449.88 kb)</a>                    </td>
+                </tr>
+
+            </tbody>
+            <tbody  >
+                <tr>
+
+                    <td class="file-name" colspan="2" rowspan="1">test</td>
+                    <td>
+<a href="/c/house-prices-advanced-regression-techniques/download/test.csv" name="test.csv" onclick="window.Intercom(&#39;trackEvent&#39;,&#39;download_compdata&#39;,{&#39;comp_id&#39;: 5407});">.csv (440.83 kb)</a>                    </td>
+                </tr>
+
+            </tbody>
+            <tbody  >
+                <tr>
+
+                    <td class="file-name" colspan="2" rowspan="1">sample_submission</td>
+                    <td>
+<a href="/c/house-prices-advanced-regression-techniques/download/sample_submission.csv" name="sample_submission.csv" onclick="window.Intercom(&#39;trackEvent&#39;,&#39;download_compdata&#39;,{&#39;comp_id&#39;: 5407});">.csv (31.19 kb)</a>                    </td>
+                </tr>
+
+            </tbody>
+    </table>
+    <script type="text/javascript">
+        $(function () {
+
+            // Decorate obselete files
+            $('#data-files a.obsolete').each(function () {
+                var obsoleteMsg = "Superseded by newer version";
+                if ($(this).data('msg')) {
+                    obsoleteMsg = $(this).attr('data-msg');
+                }
+
+                $(this).attr('title', obsoleteMsg);
+            });
+
+            // If we have a search parameter, try to immediately download the
+            // file of that name.
+            var search = this.location.search;
+            if (search.length) {
+                var selector = "#data-files a[name=\"" + search.substr(1) + "\"]";
+                var fileLink = $(selector);
+                if (fileLink.length == 1) {
+                        this.location = fileLink.prop("href");
+                }
+            }
+        });
+    </script>
+
+<div class="cms-page">
+    
+
+    <h2>File descriptions</h2>
+<ul>
+<li><strong>train.csv</strong> - the training set</li>
+<li><strong>test.csv</strong> - the test set</li>
+<li><strong>data_description.txt</strong> - full description of each column, originally prepared by Dean De Cock but lightly edited to match the column names used here</li>
+<li><strong>sample_submission.csv</strong> - a benchmark submission from a linear regression on year and month of sale, lot square footage, and number of bedrooms</li>
+</ul>
+<h2>Data fields</h2>
+<p>Here's a brief version of what you'll find in the data description file.</p>
+<ul>
+<li><strong>SalePrice</strong> - the property's sale price in dollars. This is the target variable that you're trying to predict.</li>
+<li><strong>MSSubClass</strong>: The building class</li>
+<li><strong>MSZoning</strong>: The general zoning classification</li>
+<li><strong>LotFrontage</strong>: Linear feet of street connected to property</li>
+<li><strong>LotArea</strong>: Lot size in square feet</li>
+<li><strong>Street</strong>: Type of road access</li>
+<li><strong>Alley</strong>: Type of alley access</li>
+<li><strong>LotShape</strong>: General shape of property</li>
+<li><strong>LandContour</strong>: Flatness of the property</li>
+<li><strong>Utilities</strong>: Type of utilities available</li>
+<li><strong>LotConfig</strong>: Lot configuration</li>
+<li><strong>LandSlope</strong>: Slope of property</li>
+<li><strong>Neighborhood</strong>: Physical locations within Ames city limits</li>
+<li><strong>Condition1</strong>: Proximity to main road or railroad</li>
+<li><strong>Condition2</strong>: Proximity to main road or railroad (if a second is present)</li>
+<li><strong>BldgType</strong>: Type of dwelling</li>
+<li><strong>HouseStyle</strong>: Style of dwelling</li>
+<li><strong>OverallQual</strong>: Overall material and finish quality</li>
+<li><strong>OverallCond</strong>: Overall condition rating</li>
+<li><strong>YearBuilt</strong>: Original construction date</li>
+<li><strong>YearRemodAdd</strong>: Remodel date</li>
+<li><strong>RoofStyle</strong>: Type of roof</li>
+<li><strong>RoofMatl</strong>: Roof material</li>
+<li><strong>Exterior1st</strong>: Exterior covering on house</li>
+<li><strong>Exterior2nd</strong>: Exterior covering on house (if more than one material)</li>
+<li><strong>MasVnrType</strong>: Masonry veneer type</li>
+<li><strong>MasVnrArea</strong>: Masonry veneer area in square feet</li>
+<li><strong>ExterQual</strong>: Exterior material quality</li>
+<li><strong>ExterCond</strong>: Present condition of the material on the exterior</li>
+<li><strong>Foundation</strong>: Type of foundation</li>
+<li><strong>BsmtQual</strong>: Height of the basement</li>
+<li><strong>BsmtCond</strong>: General condition of the basement</li>
+<li><strong>BsmtExposure</strong>: Walkout or garden level basement walls</li>
+<li><strong>BsmtFinType1</strong>: Quality of basement finished area</li>
+<li><strong>BsmtFinSF1</strong>: Type 1 finished square feet</li>
+<li><strong>BsmtFinType2</strong>: Quality of second finished area (if present)</li>
+<li><strong>BsmtFinSF2</strong>: Type 2 finished square feet</li>
+<li><strong>BsmtUnfSF</strong>: Unfinished square feet of basement area</li>
+<li><strong>TotalBsmtSF</strong>: Total square feet of basement area</li>
+<li><strong>Heating</strong>: Type of heating</li>
+<li><strong>HeatingQC</strong>: Heating quality and condition</li>
+<li><strong>CentralAir</strong>: Central air conditioning</li>
+<li><strong>Electrical</strong>: Electrical system</li>
+<li><strong>1stFlrSF</strong>: First Floor square feet</li>
+<li><strong>2ndFlrSF</strong>: Second floor square feet</li>
+<li><strong>LowQualFinSF</strong>: Low quality finished square feet (all floors)</li>
+<li><strong>GrLivArea</strong>: Above grade (ground) living area square feet</li>
+<li><strong>BsmtFullBath</strong>: Basement full bathrooms</li>
+<li><strong>BsmtHalfBath</strong>: Basement half bathrooms</li>
+<li><strong>FullBath</strong>: Full bathrooms above grade</li>
+<li><strong>HalfBath</strong>: Half baths above grade</li>
+<li><strong>Bedroom</strong>: Number of bedrooms above basement level</li>
+<li><strong>Kitchen</strong>: Number of kitchens</li>
+<li><strong>KitchenQual</strong>: Kitchen quality</li>
+<li><strong>TotRmsAbvGrd</strong>: Total rooms above grade (does not include bathrooms)</li>
+<li><strong>Functional</strong>: Home functionality rating</li>
+<li><strong>Fireplaces</strong>: Number of fireplaces</li>
+<li><strong>FireplaceQu</strong>: Fireplace quality</li>
+<li><strong>GarageType</strong>: Garage location</li>
+<li><strong>GarageYrBlt</strong>: Year garage was built</li>
+<li><strong>GarageFinish</strong>: Interior finish of the garage</li>
+<li><strong>GarageCars</strong>: Size of garage in car capacity</li>
+<li><strong>GarageArea</strong>: Size of garage in square feet</li>
+<li><strong>GarageQual</strong>: Garage quality</li>
+<li><strong>GarageCond</strong>: Garage condition</li>
+<li><strong>PavedDrive</strong>: Paved driveway</li>
+<li><strong>WoodDeckSF</strong>: Wood deck area in square feet</li>
+<li><strong>OpenPorchSF</strong>: Open porch area in square feet</li>
+<li><strong>EnclosedPorch</strong>: Enclosed porch area in square feet</li>
+<li><strong>3SsnPorch</strong>: Three season porch area in square feet</li>
+<li><strong>ScreenPorch</strong>: Screen porch area in square feet</li>
+<li><strong>PoolArea</strong>: Pool area in square feet</li>
+<li><strong>PoolQC</strong>: Pool quality</li>
+<li><strong>Fence</strong>: Fence quality</li>
+<li><strong>MiscFeature</strong>: Miscellaneous feature not covered in other categories</li>
+<li><strong>MiscVal</strong>: $Value of miscellaneous feature</li>
+<li><strong>MoSold</strong>: Month Sold</li>
+<li><strong>YrSold</strong>: Year Sold</li>
+<li><strong>SaleType</strong>: Type of sale</li>
+<li><strong>SaleCondition</strong>: Condition of sale</li>
+</ul>
+</div>
+
+
+                </div>
+            </div>  
+        </div>
+    
+
+
+            </div>
+    </div> <!-- wrap -->
+    
+        <div id="footer">
+            <div id="footer-inside">
+                <div id="footer-social">
+                        <div id="social-links">
+            <a class="twitter" href="http://www.twitter.com/kaggle" title="Follow Kaggle on Twitter"></a>     
+                    <a class="facebook" href="http://www.facebook.com/kaggle" title="Follow Kaggle on Facebook"></a>           
+                    <a class="linkedin" href="http://www.linkedin.com/companies/kaggle" title="Follow Kaggle on LinkedIn"></a>        
+    </div><!-- social-links -->
+
+                </div>
+                <div id="footer-copyright">
+                    
+
+
+&copy; 2016 Kaggle Inc                </div>
+                <div id="footer-links">
+                    <a href="/team">Our Team</a>
+<a href="/careers">Careers</a>
+<a href="/terms">Terms</a>
+<a href="/privacy">Privacy</a> 
+<!--<a href="/Home/ContactPress">Press</a>-->
+<a href="/contact">Contact/Support</a>
+                </div> <!-- footer-links -->
+            </div> <!-- footer-inside -->
+        </div> <!--footer-->
+
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                "HTML-CSS": {
+                    preferredFont: "TeX",
+                    availableFonts: ["STIX","TeX"],
+                    linebreaks: {
+                        automatic: true
+                    },
+                    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+                },
+                tex2jax: {
+                    inlineMath: [ ["\\\\(","\\\\)"] ],
+                    displayMath: [ ["$$","$$"], ["\\[", "\\]"] ],
+                    processEscapes: true,
+                    ignoreClass: "tex2jax_ignore|dno"
+                },
+                TeX: {
+                    noUndefined: {
+                        attributes: {
+                            mathcolor: "red",
+                            mathbackground: "#FFEEEE",
+                            mathsize: "90%"
+                        }
+                    }
+                },
+                Macros: { 
+                    href: "{}" 
+                },
+                messageStyle: "none"
+            });
+        </script>
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-12629138-1']);
+            _gaq.push(['_trackPageview']);
+            _gaq.push(['_trackPageLoadTime']);
+            _gaq.push(['_setCustomVar', 1, 'usertype', 'anonymous', 2]);
+            (function () {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        <script type="text/javascript">
+            /**
+        * Function that tracks a click on an outbound link in Google Analytics.
+        * This function takes a valid URL string as an argument, and uses that URL string
+        * as the event label.
+        * See: https://support.google.com/analytics/answer/1136920?hl=en
+        */
+            var trackOutboundLink = function(url) {
+                ga('send', 'event', 'outbound', 'click', url, {'hitCallback':
+                        function () {
+                            document.location = url;
+                        }
+                });
+            }
+        </script>
+
+
+    
+
+    <!-- Cheers, RD00155D486537p. -->
+</body>
+</html>
