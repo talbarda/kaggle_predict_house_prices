@@ -5,9 +5,10 @@ import pandas as pd
 import sklearn.linear_model as lm
 from sklearn.model_selection import learning_curve
 
+
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
                         n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5), scoring='accuracy'):
-    plt.figure(figsize=(10,6))
+    plt.figure(figsize=(10, 6))
     plt.title(title)
     if ylim is not None:
         plt.ylim(*ylim)
@@ -32,61 +33,73 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
     plt.legend(loc="best")
     return plt
 
-train = pd.read_csv('input/train.csv')
-test = pd.read_csv('input/test.csv')
+train = pd.read_csv('train.csv')
+test = pd.read_csv('test.csv')
 
 for c in train:
     train[c] = pd.Categorical(train[c].values).codes
-
+'''
 for c in test:
     test[c] = pd.Categorical(test[c].values).codes
-
+'''
 X = train.drop(['SalePrice'], axis=1)
-#X = train[['OverallQual', 'GarageArea', 'GarageCars', 'TotalBsmtSF', 'TotRmsAbvGrd', 'FullBath', 'GrLivArea']]
+# X = train[['OverallQual', 'GarageArea', 'GarageCars']]
 y = train.SalePrice
 
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=0)
 
 from sklearn import linear_model
 lr = linear_model.LinearRegression()
 lr.fit(X_train, y_train)
 lr.score(X_train, y_train)
 
-#from sklearn import cross_validation
-#scores = cross_validation.cross_val_score(lr, X, y)
-#scores.mean()
+# from sklearn import cross_validation
+# scores = cross_validation.cross_val_score(lr, X, y)
+# scores.mean()
 
-from sklearn.model_selection import cross_val_predict
+from sklearn.model_selection import cross_val_predict, cross_val_score
+from sklearn.metrics import r2_score, median_absolute_error, mean_squared_error
+
 predicted = cross_val_predict(lr, X, y, cv=10)
 fig, ax = plt.subplots()
 ax.scatter(y, predicted, color='red')
 ax.plot([y.min(), y.max()], [y.min(), y.max()], 'k--', lw=4)
 ax.set_xlabel('Measured')
 ax.set_ylabel('Predicted')
-plt.show()
+# plt.show()
 
-#from sklearn.linear_model import RidgeCV
-#clf_ridge = lm.Ridge()
-#clf_ridge.fit(X, y, sample_weight=None)
-#pred_train = predicted.predict(X)
+# from sklearn.linear_model import RidgeCV
+# clf_ridge = lm.Ridge()
+# clf_ridge.fit(X, y, sample_weight=None)
+# pred_train = predicted.predict(X)
 
 clf_ridge_cv = lm.RidgeCV()
 clf_ridge_cv.fit(X, y, sample_weight=None)
 pred_train_cv = clf_ridge_cv.predict(X)
 predicted = cross_val_predict(clf_ridge_cv, X, y, cv=10)
+scores = cross_val_score(clf_ridge_cv, X, y, cv=10)
 
+print ("r2 score : %0.2f" % r2_score(y, predicted))
+print ("median_absolute_error : %0.2f" % median_absolute_error(y, predicted))
+print ("mean_squared_error : %0.2f" % mean_squared_error(y, predicted))
+print ("median_absolute_error : %0.2f" % median_absolute_error(y, predicted))
+
+
+print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 print(predicted.mean())
 print(pred_train_cv.mean())
 
-plt = plot_learning_curve(clf_ridge_cv, 'ridge_model', X, y, train_sizes=[200,400,600,800,100,1200,1300], cv=10, scoring='neg_mean_squared_error')
-plt.show()
-#pred_test= clf_ridge.predict(test)
+plt = plot_learning_curve(clf_ridge_cv, 'ridge_model', X, y, train_sizes=[
+                          200, 400, 600, 800, 100, 1200, 1300], cv=10, scoring='neg_mean_squared_error')
+# plt.show()
+# pred_test= clf_ridge.predict(test)
 
-#plt.figure(figsize=(10,6))
-#plt.title("train vs test")
-#plt.xlabel("data")
-#plt.ylabel("estimation")
-#plt.plot(pred_train, 'o-', color="r", label="Train predict")
-#plt.plot(pred_train_cv, 'o-', color="g", label="Test predict")
-#plt.show()
+# plt.figure(figsize=(10,6))
+# plt.title("train vs test")
+# plt.xlabel("data")
+# plt.ylabel("estimation")
+# plt.plot(pred_train, 'o-', color="r", label="Train predict")
+# plt.plot(pred_train_cv, 'o-', color="g", label="Test predict")
+# plt.show()
